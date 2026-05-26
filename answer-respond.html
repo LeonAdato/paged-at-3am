@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nobl9 Respond Card</title>
+    <style>
+        /* Define variables for colors and sizes to make it easy to tweak */
+        :root {
+            --card-width: 500px;
+            --card-height: 375px; /* Based on typical aspect ratio */
+            --background-dark: #12212d; /* Deep dark teal-blue */
+            --text-main: #ffffff; /* White for small text */
+            --text-respond: #ff007f; /* Vibrant hot pink */
+            --font-main: 'Arial', sans-serif; /* Fallback sans-serif */
+            --font-tech: 'Orbitron', sans-serif; /* For 'RESPOND' and other tech-like text */
+        }
+
+        /* Basic reset for clean canvas */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Center the card on the page */
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #3e2723; /* A warm wood-tone brown for the table */
+            font-family: var(--font-main);
+        }
+
+        /* The main card container */
+        .card {
+            width: var(--card-width);
+            height: var(--card-height);
+            background-color: var(--background-dark);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5), 0 10px 20px rgba(0, 0, 0, 0.3); /* Inner and outer shadow for dimension */
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            position: relative;
+            overflow: hidden; /* For neat corner cutouts and clean layout */
+        }
+
+        /* Content inside the card */
+        .card-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            grid-template-rows: auto auto auto auto;
+            gap: 10px;
+            color: var(--text-main);
+        }
+
+        /* Top Left: NOBL9 logo */
+        .logo-nobl9 {
+            grid-column: 1 / 2;
+            grid-row: 1 / 2;
+            display: flex;
+            align-items: center;
+            font-weight: bold;
+            font-size: 1.2rem;
+            letter-spacing: 1px;
+            justify-self: start;
+        }
+
+        /* Top Right: "Service Level Objectives Platform" */
+        .platform-text {
+            grid-column: 2 / 3;
+            grid-row: 1 / 2;
+            text-align: right;
+            font-size: 0.8rem;
+            line-height: 1.2;
+            justify-self: end;
+        }
+
+        /* Middle Section: "03 AM LOCAL TIME" and "RESPOND" */
+        .middle-text {
+            grid-column: 1 / 3;
+            grid-row: 2 / 3;
+            text-align: left;
+            margin-top: 10px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .local-time {
+            font-size: 1rem;
+            margin-bottom: 2px;
+            letter-spacing: 0.5px;
+        }
+
+        .respond-text {
+            color: var(--text-respond);
+            font-family: var(--font-tech);
+            font-size: 3.5rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            line-height: 1;
+        }
+
+        /* Bottom Section: The long text block */
+        .bottom-text {
+            grid-column: 1 / 3;
+            grid-row: 4 / 5;
+            text-align: left;
+            margin-top: 15px;
+            margin-bottom: 10px;
+            line-height: 1.4;
+            letter-spacing: 0.3px;
+        }
+
+        /* The placeholder for the long text to make it easy to find with JS */
+        .placeholder-text {
+            font-size: 0.9rem;
+            /* No color set here, it will inherit from the .bottom-text color */
+        }
+    </style>
+</head>
+<body>
+
+    <div class="card">
+        <div class="card-content">
+            <div class="logo-nobl9">
+                <span>NOBL9</span>
+                <div style="width: 20px; height: 10px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; margin-left: 5px;">
+                    <div style="background-color: var(--text-main); border-radius: 1px;"></div>
+                    <div style="background-color: var(--text-main); border-radius: 1px;"></div>
+                    <div style="background-color: var(--text-main); border-radius: 1px;"></div>
+                    <div style="background-color: var(--text-main); border-radius: 1px;"></div>
+                    <div style="background-color: var(--text-main); border-radius: 1px;"></div>
+                    <div style="background-color: var(--text-main); border-radius: 1px;"></div>
+                    <div style="background-color: var(--text-main); border-radius: 1px;"></div>
+                    <div style="background-color: var(--text-main); border-radius: 1px;"></div>
+                    <div style="background-color: var(--text-main); border-radius: 1px;"></div>
+                </div>
+            </div>
+            <div class="platform-text">
+                Service Level Objectives Platform
+            </div>
+
+            <div class="middle-text">
+                <span class="local-time">03 AM LOCAL TIME</span>
+                <span class="respond-text">RESPOND</span>
+            </div>
+
+            <div class="bottom-text">
+                <span class="placeholder-text" id="random-phase-text">
+                    You don't need an SLO to tell you that everything in prod being down is bad. Better check it out.
+                </span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Use JavaScript to replace the text with a random phase on every page load
+        document.addEventListener("DOMContentLoaded", function() {
+            // Define an array of phases (you can populate this with many more)
+            var phases = [
+                "You don't need an SLO to tell you that everything in prod being down is bad. Better check it out.",
+                "Service is degraded on multiple nodes. This is a critical issue. Investigate immediately.",
+                "Primary database connection failure. Potential data loss risk. Respond with urgency.",
+                "Critical API endpoint is returning 500 errors. Major impact on customer flow. Immediate attention required."
+            ];
+
+            //

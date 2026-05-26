@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dynamic Alert Card</title>
+    <style>
+        /* Import a clean, futuristic tech font matching the card's style */
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&display=swap');
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: #2e1d18; /* Table texture background color */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            font-family: 'Orbitron', sans-serif;
+        }
+
+        /* Outer Frame Container */
+        .card-container {
+            width: 560px;
+            height: 420px;
+            background-color: #161816; /* Thick matte black border */
+            border-radius: 42px;
+            padding: 32px;
+            box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.8), 0 15px 35px rgba(0, 0, 0, 0.6);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Inner Chartreuse/Lime Screen */
+        .inner-screen {
+            width: 100%;
+            height: 100%;
+            background-color: #b8d433; /* Vibrant lime-yellow color profile */
+            border-radius: 24px;
+            padding: 30px 35px;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            position: relative;
+            box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.2);
+            color: #161816; /* Dark slate text styling for contrast */
+        }
+
+        /* Header Row Grid */
+        .header-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            margin-bottom: 45px;
+        }
+
+        .text-time {
+            font-size: 1.35rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+            word-spacing: 3px;
+        }
+
+        .text-id {
+            font-size: 1.45rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+
+        /* Main Body Alert Message area */
+        .text-main {
+            font-size: 2.25rem;
+            font-weight: 700;
+            line-height: 1.35;
+            letter-spacing: 1.5px;
+            max-width: 95%;
+            text-transform: uppercase;
+        }
+
+        /* Interactive Refresh Button styling just for testing */
+        .refresh-btn {
+            margin-top: 25px;
+            padding: 10px 20px;
+            background-color: #161816;
+            color: #b8d433;
+            border: none;
+            border-radius: 8px;
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 700;
+            cursor: pointer;
+            transition: opacity 0.2s;
+        }
+        .refresh-btn:hover {
+            opacity: 0.9;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="card-container">
+        <div class="inner-screen">
+            <div class="header-row">
+                <div class="text-time" id="alert-time">03 AM LOCAL TIME</div>
+                <div class="text-id" id="alert-id">01</div>
+            </div>
+            <div class="text-main" id="alert-message">
+                90% DISK UTILIZATION ON DB NODE 3
+            </div>
+        </div>
+    </div>
+
+    <button class="refresh-btn" onclick="loadRandomPhrase()">GENERATE RANDOM PHRASE</button>
+
+    <script>
+        // Simulation of your lookup file/database dataset
+        const phraseLookup = [
+            {
+                time: "03 AM LOCAL TIME",
+                id: "01",
+                message: "90% DISK UTILIZATION ON DB NODE 3"
+            },
+            {
+                time: "11 PM LOCAL TIME",
+                id: "04",
+                message: "CRITICAL MEMORY LEAK DETECTED IN PROD"
+            },
+            {
+                time: "07 AM LOCAL TIME",
+                id: "12",
+                message: "API GATEWAY LATENCY EXCEEDS 500MS THRESHOLD"
+            },
+            {
+                time: "12 PM LOCAL TIME",
+                id: "07",
+                message: "SSL CERTIFICATE EXPIRATION WARNING ON CORE DOMAIN"
+            },
+            {
+                time: "04 AM LOCAL TIME",
+                id: "09",
+                message: "UNEXPECTED SPIKE IN 502 BAD GATEWAY ERRORS"
+            }
+        ];
+
+        // Function that updates the DOM using a randomized index from the dataset
+        function loadRandomPhrase() {
+            // Get a random array entry
+            const randomIndex = Math.floor(Math.random() * phraseLookup.length);
+            const selectedAlert = phraseLookup[randomIndex];
+
+            // Safely inject values into the HTML containers
+            document.getElementById('alert-time').innerText = selectedAlert.time;
+            document.getElementById('alert-id').innerText = selectedAlert.id;
+            document.getElementById('alert-message').innerText = selectedAlert.message;
+        }
+
+        // Initialize with a random lookup phrase immediately when the page finishes loading
+        window.onload = loadRandomPhrase;
+    </script>
+
+</body>
+</html>

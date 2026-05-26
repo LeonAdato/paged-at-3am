@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nobl9 Pager Card</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800;900&display=swap');
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: #3e2723; /* Dark wood background match */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            font-family: 'Orbitron', sans-serif;
+        }
+
+        /* Outer Chassis */
+        .pager-card {
+            width: 580px;
+            height: 435px;
+            background-color: #1a252c; /* Dark slate blue matte finish */
+            border-radius: 40px;
+            padding: 25px 30px;
+            box-shadow: inset 0 0 15px rgba(0,0,0,0.6), 0 15px 30px rgba(0,0,0,0.5);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        /* Top Grid Section: Screen + Right Toggle Buttons */
+        .top-section {
+            display: grid;
+            grid-template-columns: 1fr 90px;
+            gap: 20px;
+            height: 255px;
+        }
+
+        /* Central Yellow Backlit Display screen */
+        .display-screen {
+            background-color: #d8ed38; /* Bright retro chartreuse/lime yellow */
+            border-radius: 35px;
+            padding: 35px 30px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            box-shadow: inset 4px 4px 12px rgba(0, 0, 0, 0.3);
+            color: #22313a;
+        }
+
+        .screen-header {
+            font-size: 1.4rem;
+            font-weight: 800;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+            opacity: 0.85;
+        }
+
+        .screen-main {
+            font-size: 2.75rem;
+            font-weight: 900;
+            line-height: 1.15;
+            letter-spacing: 0.5px;
+        }
+
+        /* Right Panel Vertical Buttons Housing */
+        .right-buttons {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            background-color: #22313a; /* Darker inset bezel */
+            border-radius: 12px;
+            padding: 4px;
+        }
+
+        .btn-v {
+            background-color: #2a3d49;
+            height: 120px;
+            border-radius: 8px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            box-shadow: inset 0 2px 4px rgba(255,255,255,0.05), 0 4px 6px rgba(0,0
