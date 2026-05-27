@@ -1,0 +1,74 @@
+[
+  {
+    "id": 1,
+    "issue": "HOST PRDW3456\nOFFLINE\nHOST PRDW3459\nOFFLINE\n****\nALL 152 PROD HOSTS OFFLINE",
+    "answer": {
+      "title": "RESPOND",
+      "detail": "You don't need an SLO to tell you that everything in prod being down is bad. Better check it out."
+    }
+  },
+  {
+    "id": 2,
+    "issue": "90% DISK UTILIZATION ON DB NODE 3",
+    "answer": {
+      "title": "IGNORE",
+      "detail": "Unless customers complain, it's impossible to know if this is causing a real issue. Remember to add an SLO to avoid this recurring noisy alert."
+    }
+  },
+  {
+    "id": 3,
+    "issue": "DEPLOY PIPELINE IS BROKEN",
+    "answer": {
+      "title": "IT DEPENDS",
+      "detail": "The dependency various organizations have on their deployment pipeline can vary wildly, so either option is correct."
+    }
+  },
+  {
+    "id": 4,
+    "issue": "NO DATA: EPHEMERAL STORAGE IS ABNORMALLY HIGH ON HOST: 1-0270DEE16E37AC586",
+    "answer": {
+      "title": "RESPOND",
+      "detail": "Sometimes it's hard to tell if your workloads and clusters are impacted by issues far down in the stack. Better to respond and investigate — ideally setting up monitoring and an SLO to avoid this recurring noisy alert."
+    }
+  },
+  {
+    "id": 5,
+    "issue": "YOUR ERROR BUDGET WOULD BE EXHAUSTED IN 2 HOURS AND THE CONDITION LASTS FOR 10 MINUTES",
+    "answer": {
+      "title": "RESPOND",
+      "detail": "SLO alerts should be actionable. Your error budget is burning fast and you are on pace to run out of it in the next 2 hours at this rate. You should probably get up and take care of this."
+    }
+  },
+  {
+    "id": 6,
+    "issue": "SERVICE RETURNING 502s\nERROR BUDGET REMAINING: -165%\nBURN RATE: 5x",
+    "answer": {
+      "title": "RESPOND",
+      "detail": "The burn rate indicates you're having a real issue. You should investigate now."
+    }
+  },
+  {
+    "id": 7,
+    "issue": "CEO SAYS THE SITE ISN'T LOADING FOR THEM",
+    "answer": {
+      "title": "IGNORE",
+      "detail": "Your CEO is but one of many users (albeit an important one). It's more likely it's an issue with their wifi or setup than real downtime (unless you have other signals)."
+    }
+  },
+  {
+    "id": 8,
+    "issue": "HTTP 500 ERRORS LEADING TO BUDGET BURN OF 10x NORMAL",
+    "answer": {
+      "title": "RESPOND",
+      "detail": "Your service is either completely down or performing terribly and likely requires immediate human intervention."
+    }
+  },
+  {
+    "id": 9,
+    "issue": "EURAPP STATUS:\n1 HOST = DOWN\n9 HOST = UP",
+    "answer": {
+      "title": "IGNORE",
+      "detail": "SLOs provide a buffer for a certain amount of expected failure. You can use them to let you know if one host out of ten is actually causing your users problems or if you can absorb this failure and check on things later."
+    }
+  }
+]

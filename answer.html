@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Paged At 3AM — Answer</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Inter:wght@400;600;700&display=swap');
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: #2e1d18;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            font-family: 'Inter', sans-serif;
+        }
+
+        /* Theme accent colors */
+        .theme-respond { --accent: #ff007f; --accent-glow: rgba(255, 0, 127, 0.25); }
+        .theme-ignore  { --accent: #49c5d3; --accent-glow: rgba(73, 197, 211, 0.2);  }
+        .theme-depends { --accent: #a3e635; --accent-glow: rgba(163, 230, 53, 0.2);  }
+
+        .card {
+            width: 560px;
+            height: 420px;
+            background-color: #0d1b1e;
+            border-radius: 36px;
+            padding: 35px 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.6), 0 15px 35px rgba(0, 0, 0, 0.5);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            width: 100%;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 900;
+            font-size: 1.5rem;
+            color: #ffffff;
+            letter-spacing: 3px;
+        }
+
+        .logo-icon {
+            margin-left: 4px;
+            display: inline-grid;
+            grid-template-columns: repeat(3, 4px);
+            gap: 2px;
+        }
+
+        .logo-dot {
+            width: 4px;
+            height: 4px;
+            background-color: var(--accent, #49c5d3);
+            border-radius: 50%;
+        }
+
+        .sub-brand {
+            text-align: right;
+            color: #ffffff;
+            font-size: 0.75rem;
+            line-height: 1.3;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            max-width: 150px;
+        }
+
+        .card-body {
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            margin-top: auto;
+        }
+
+        .timestamp {
+            font-family: 'Orbitron', sans-serif;
+            color: #dedede;
+            font-size: 1.05rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+            margin-bottom: 4px;
+        }
+
+        .main-status {
+            font-family: 'Orbitron', sans-serif;
+            color: var(--accent, #49c5d3);
+            font-size: 3.8rem;
+            font-weight: 900;
+            letter-spacing: 2px;
+            line-height: 1.1;
+            margin-bottom: 15px;
+            text-shadow: 0 0 12px var(--accent-glow, rgba(73, 197, 211, 0.2));
+        }
+
+        .description {
+            font-family: 'Orbitron', sans-serif;
+            color: var(--accent, #49c5d3);
+            font-size: 0.88rem;
+            line-height: 1.45;
+            letter-spacing: 1.2px;
+            font-weight: 700;
+            max-width: 100%;
+            text-transform: uppercase;
+        }
+
+        .question-counter {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #ffffff;
+            letter-spacing: 2px;
+            margin-bottom: 16px;
+        }
+
+        .refresh-btn {
+            padding: 10px 20px;
+            background-color: #161816;
+            color: #b8d433;
+            border: none;
+            border-radius: 8px;
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 700;
+            cursor: pointer;
+            transition: opacity 0.2s;
+        }
+        .refresh-btn:hover {
+            opacity: 0.9;
+        }
+
+        .result-label {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2rem;
+            font-weight: 900;
+            letter-spacing: 3px;
+            margin-bottom: 8px;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="result-label" class="result-label"></div>
+    <div id="question-counter" class="question-counter">0 / 10</div>
+
+    <div class="card" id="card">
+        <div class="card-header">
+            <div class="logo-container">
+                NOBL9
+                <div class="logo-icon">
+                    <div class="logo-dot"></div><div class="logo-dot"></div><div class="logo-dot"></div>
+                    <div class="logo-dot"></div><div class="logo-dot"></div><div class="logo-dot"></div>
+                    <div class="logo-dot"></div><div class="logo-dot"></div><div class="logo-dot"></div>
+                </div>
+            </div>
+            <div class="sub-brand">
+                Service Level Objectives Platform
+            </div>
+        </div>
+
+        <div class="card-body">
+            <div class="timestamp" id="card-time">03 AM LOCAL TIME</div>
+            <div class="main-status" id="card-status"></div>
+            <div class="description" id="card-desc"></div>
+        </div>
+    </div>
+
+    <div style="display:flex; gap:100px; margin-top:25px;">
+        <button class="refresh-btn" onclick="startOver()">START OVER</button>
+        <button class="refresh-btn" onclick="nextQuestion()">NEXT QUESTION</button>
+    </div>
+
+    <script>
+        const themes = {
+            'RESPOND':    'theme-respond',
+            'IGNORE':     'theme-ignore',
+            'IT DEPENDS': 'theme-depends'
+        };
+
+        function loadAnswer() {
+            const answer = JSON.parse(sessionStorage.getItem('answer') || '{}');
+
+            document.getElementById('card').classList.add(themes[answer.title] || 'theme-ignore');
+            document.getElementById('card-time').innerText = "03 AM LOCAL TIME";
+            document.getElementById('card-status').innerText = answer.title || '';
+            document.getElementById('card-desc').innerText = answer.detail || '';
+
+            const result = sessionStorage.getItem('result') || '';
+            const resultEl = document.getElementById('result-label');
+            resultEl.innerText = result;
+            resultEl.style.color = result === 'CORRECT' ? '#49c5d3' : '#ff007f';
+
+            const questioncount = parseInt(sessionStorage.getItem('questioncount') || '0');
+            const correct = parseInt(sessionStorage.getItem('correct') || '0');
+            document.getElementById('question-counter').innerText = 'Question ' + questioncount + ' / 10. ' + correct + ' answered correctly.';
+        }
+
+        function startOver() {
+            sessionStorage.setItem('questioncount', '0');
+            sessionStorage.setItem('correct', '0');
+            sessionStorage.setItem('incorrect', '0');
+            window.location.href = 'issue.html';
+        }
+
+        function nextQuestion() {
+            window.location.href = 'issue.html';
+        }
+
+        window.onload = loadAnswer;
+    </script>
+
+</body>
+</html>

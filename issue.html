@@ -26,7 +26,7 @@
 
         /* Outer Frame Container */
         .card-container {
-            width: 560px;
+            width: 700px;
             height: 420px;
             background-color: #161816; /* Thick matte black border */
             border-radius: 42px;
@@ -76,12 +76,22 @@
 
         /* Main Body Alert Message area */
         .text-main {
-            font-size: 2.25rem;
+            font-size: 1.5rem;
             font-weight: 700;
             line-height: 1.35;
             letter-spacing: 1.5px;
             max-width: 95%;
             text-transform: uppercase;
+            white-space: pre-line;
+        }
+
+        .question-counter {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #ffffff;
+            letter-spacing: 2px;
+            margin-bottom: 16px;
         }
 
         /* Interactive Refresh Button styling just for testing */
@@ -100,9 +110,72 @@
         .refresh-btn:hover {
             opacity: 0.9;
         }
+
+        /* Arrow and pill shapes from splash.html */
+        .arrow-left {
+            width: 0; height: 0;
+            border-top: 10px solid transparent;
+            border-bottom: 10px solid transparent;
+            border-right: 18px solid #ffffff;
+            flex-shrink: 0;
+        }
+
+        .arrow-right {
+            width: 0; height: 0;
+            border-top: 10px solid transparent;
+            border-bottom: 10px solid transparent;
+            border-left: 18px solid #ffffff;
+            flex-shrink: 0;
+        }
+
+        .pill-button {
+            background-color: #182531;
+            border-radius: 22px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Choice button row */
+        .choice-row {
+            display: flex;
+            gap: 16px;
+            margin-top: 28px;
+            align-items: center;
+        }
+
+        .choice-btn {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background-color: #182531;
+            padding: 13px 20px;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: opacity 0.2s;
+            user-select: none;
+        }
+
+        .choice-btn:hover {
+            opacity: 0.8;
+        }
+
+        .pill-button.choice-btn {
+            border-radius: 22px;
+            padding: 13px 24px;
+        }
+
+        .choice-label {
+            color: #ffffff;
+            font-size: 0.8rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+        }
     </style>
 </head>
 <body>
+
+    <div id="question-counter" class="question-counter">0 / 10</div>
 
     <div class="card-container">
         <div class="inner-screen">
@@ -110,58 +183,86 @@
                 <div class="text-time" id="alert-time">03 AM LOCAL TIME</div>
                 <div class="text-id" id="alert-id">01</div>
             </div>
-            <div class="text-main" id="alert-message">
-                90% DISK UTILIZATION ON DB NODE 3
-            </div>
+            <div class="text-main" id="alert-message"></div>
         </div>
     </div>
 
-    <button class="refresh-btn" onclick="loadRandomPhrase()">GENERATE RANDOM PHRASE</button>
+    <div style="display:flex; gap:100px; margin-top:25px;">
+        <button class="refresh-btn" style="margin-top:0;" onclick="startOver()">START OVER</button>
+        <button class="refresh-btn" style="margin-top:0;" onclick="loadRandomPhrase()">NEXT QUESTION</button>
+    </div>
+
+    <div class="choice-row">
+        <div class="choice-btn" onclick="recordChoice('RESPOND')">
+            <div class="arrow-left"></div>
+            <span class="choice-label">RESPOND</span>
+        </div>
+        <div class="pill-button choice-btn" onclick="recordChoice('DEPENDS')">
+            <span class="choice-label">DEPENDS</span>
+        </div>
+        <div class="choice-btn" onclick="recordChoice('IGNORE')">
+            <span class="choice-label">IGNORE</span>
+            <div class="arrow-right"></div>
+        </div>
+    </div>
 
     <script>
-        // Simulation of your lookup file/database dataset
-        const phraseLookup = [
-            {
-                time: "03 AM LOCAL TIME",
-                id: "01",
-                message: "90% DISK UTILIZATION ON DB NODE 3"
-            },
-            {
-                time: "11 PM LOCAL TIME",
-                id: "04",
-                message: "CRITICAL MEMORY LEAK DETECTED IN PROD"
-            },
-            {
-                time: "07 AM LOCAL TIME",
-                id: "12",
-                message: "API GATEWAY LATENCY EXCEEDS 500MS THRESHOLD"
-            },
-            {
-                time: "12 PM LOCAL TIME",
-                id: "07",
-                message: "SSL CERTIFICATE EXPIRATION WARNING ON CORE DOMAIN"
-            },
-            {
-                time: "04 AM LOCAL TIME",
-                id: "09",
-                message: "UNEXPECTED SPIKE IN 502 BAD GATEWAY ERRORS"
-            }
-        ];
+        let cards = [];
 
-        // Function that updates the DOM using a randomized index from the dataset
-        function loadRandomPhrase() {
-            // Get a random array entry
-            const randomIndex = Math.floor(Math.random() * phraseLookup.length);
-            const selectedAlert = phraseLookup[randomIndex];
-
-            // Safely inject values into the HTML containers
-            document.getElementById('alert-time').innerText = selectedAlert.time;
-            document.getElementById('alert-id').innerText = selectedAlert.id;
-            document.getElementById('alert-message').innerText = selectedAlert.message;
+        async function initCards() {
+            const response = await fetch('card_data.json');
+            cards = await response.json();
+            const questioncount = parseInt(sessionStorage.getItem('questioncount') || '0');
+            const correct = parseInt(sessionStorage.getItem('correct') || '0');
+            document.getElementById('question-counter').innerText = 'Question ' + questioncount + ' / 10. ' + correct + ' answered correctly.';
+            loadRandomPhrase();
         }
 
-        // Initialize with a random lookup phrase immediately when the page finishes loading
-        window.onload = loadRandomPhrase;
+        function loadRandomPhrase() {
+            if (!cards.length) return;
+            const card = cards[Math.floor(Math.random() * cards.length)];
+
+            document.getElementById('alert-time').innerText = "03 AM LOCAL TIME";
+            document.getElementById('alert-id').innerText = String(card.id).padStart(2, '0');
+            document.getElementById('alert-message').innerText = card.issue;
+
+            sessionStorage.setItem('answer', JSON.stringify(card.answer));
+        }
+
+        function startOver() {
+            sessionStorage.setItem('questioncount', '0');
+            sessionStorage.setItem('correct', '0');
+            sessionStorage.setItem('incorrect', '0');
+            document.getElementById('question-counter').innerText = 'Question 0 / 10. 0 answered correctly.';
+            loadRandomPhrase();
+        }
+
+        function recordChoice(choice) {
+            // Increment question counter
+            const questioncount = parseInt(sessionStorage.getItem('questioncount') || '0') + 1;
+            sessionStorage.setItem('questioncount', questioncount);
+
+            // Compare choice to the correct answer title
+            const answer = JSON.parse(sessionStorage.getItem('answer'));
+            const choiceToTitle = { 'DEPENDS': 'IT DEPENDS' };
+            const normalizedChoice = choiceToTitle[choice] || choice;
+
+            if (normalizedChoice === answer.title) {
+                const correct = parseInt(sessionStorage.getItem('correct') || '0') + 1;
+                sessionStorage.setItem('correct', correct);
+                sessionStorage.setItem('result', 'CORRECT');
+            } else {
+                const incorrect = parseInt(sessionStorage.getItem('incorrect') || '0') + 1;
+                sessionStorage.setItem('incorrect', incorrect);
+                sessionStorage.setItem('result', 'INCORRECT');
+            }
+
+            // Navigate to the answer page — styling chosen there based on answer.title
+            sessionStorage.setItem('choice', choice);
+            window.location.href = 'answer.html';
+        }
+
+        window.onload = initCards;
     </script>
 
 </body>
