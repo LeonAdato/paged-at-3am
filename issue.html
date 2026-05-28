@@ -85,6 +85,15 @@
             white-space: pre-line;
         }
 
+        .game-over {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2.5rem;
+            font-weight: 900;
+            color: #ffffff;
+            letter-spacing: 3px;
+            margin-bottom: 12px;
+        }
+
         .question-counter {
             font-family: 'Orbitron', sans-serif;
             font-size: 1.1rem;
@@ -175,6 +184,7 @@
 </head>
 <body>
 
+    <div id="game-over" class="game-over" style="display:none;">GAME OVER</div>
     <div id="question-counter" class="question-counter">0 / 10</div>
 
     <div class="card-container">
@@ -189,7 +199,7 @@
 
     <div style="display:flex; gap:100px; margin-top:25px;">
         <button class="refresh-btn" style="margin-top:0;" onclick="startOver()">START OVER</button>
-        <button class="refresh-btn" style="margin-top:0;" onclick="loadRandomPhrase()">NEXT QUESTION</button>
+        <button class="refresh-btn" style="margin-top:0;" onclick="skipQuestion()">NEXT QUESTION</button>
     </div>
 
     <div class="choice-row">
@@ -207,42 +217,74 @@
     </div>
 
     <script>
-        let cards = [];
+        let allCards = [];
 
-        async function initCards() {
-            const response = await fetch('card_data.json');
-            cards = await response.json();
-            const questioncount = parseInt(sessionStorage.getItem('questioncount') || '0');
-            const correct = parseInt(sessionStorage.getItem('correct') || '0');
-            document.getElementById('question-counter').innerText = 'Question ' + questioncount + ' / 10. ' + correct + ' answered correctly.';
-            loadRandomPhrase();
+        function shuffle(arr) {
+            const a = [...arr];
+            for (let i = a.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [a[i], a[j]] = [a[j], a[i]];
+            }
+            return a;
         }
 
-        function loadRandomPhrase() {
-            if (!cards.length) return;
-            const card = cards[Math.floor(Math.random() * cards.length)];
+        function buildDeck() {
+            const deck = shuffle(allCards).slice(0, 10);
+            sessionStorage.setItem('deck', JSON.stringify(deck));
+            sessionStorage.setItem('deckIndex', '0');
+            sessionStorage.setItem('questioncount', '0');
+            sessionStorage.setItem('correct', '0');
+            sessionStorage.setItem('incorrect', '0');
+        }
 
+        async function init() {
+            const response = await fetch('card_data.json');
+            allCards = await response.json();
+            if (!sessionStorage.getItem('deck')) buildDeck();
+            updateUI();
+        }
+
+        function updateUI() {
+            const deck = JSON.parse(sessionStorage.getItem('deck'));
+            const deckIndex = parseInt(sessionStorage.getItem('deckIndex') || '0');
+            const questioncount = parseInt(sessionStorage.getItem('questioncount') || '0');
+            const correct = parseInt(sessionStorage.getItem('correct') || '0');
+
+            document.getElementById('question-counter').innerText =
+                'Question ' + questioncount + ' / 10. ' + correct + ' answered correctly.';
+
+            if (deckIndex >= 10) {
+                document.getElementById('game-over').style.display = 'block';
+                return;
+            }
+
+            document.getElementById('game-over').style.display = 'none';
+            const card = deck[deckIndex];
             document.getElementById('alert-time').innerText = "03 AM LOCAL TIME";
             document.getElementById('alert-id').innerText = String(card.id).padStart(2, '0');
             document.getElementById('alert-message').innerText = card.issue;
-
             sessionStorage.setItem('answer', JSON.stringify(card.answer));
         }
 
         function startOver() {
-            sessionStorage.setItem('questioncount', '0');
-            sessionStorage.setItem('correct', '0');
-            sessionStorage.setItem('incorrect', '0');
-            document.getElementById('question-counter').innerText = 'Question 0 / 10. 0 answered correctly.';
-            loadRandomPhrase();
+            buildDeck();
+            updateUI();
+        }
+
+        function skipQuestion() {
+            const deckIndex = parseInt(sessionStorage.getItem('deckIndex') || '0');
+            sessionStorage.setItem('deckIndex', deckIndex + 1);
+            updateUI();
         }
 
         function recordChoice(choice) {
-            // Increment question counter
+            const deckIndex = parseInt(sessionStorage.getItem('deckIndex') || '0');
+            if (deckIndex >= 10) return;
+
             const questioncount = parseInt(sessionStorage.getItem('questioncount') || '0') + 1;
             sessionStorage.setItem('questioncount', questioncount);
+            sessionStorage.setItem('deckIndex', deckIndex + 1);
 
-            // Compare choice to the correct answer title
             const answer = JSON.parse(sessionStorage.getItem('answer'));
             const choiceToTitle = { 'DEPENDS': 'IT DEPENDS' };
             const normalizedChoice = choiceToTitle[choice] || choice;
@@ -257,12 +299,11 @@
                 sessionStorage.setItem('result', 'INCORRECT');
             }
 
-            // Navigate to the answer page — styling chosen there based on answer.title
             sessionStorage.setItem('choice', choice);
             window.location.href = 'answer.html';
         }
 
-        window.onload = initCards;
+        window.onload = init;
     </script>
 
 </body>

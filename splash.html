@@ -181,14 +181,28 @@
         }
 
         /* Action Pill Button */
+        a.pill-button {
+            text-decoration: none;
+        }
+
         .pill-button {
             width: 110px;
             height: 44px;
             background-color: #182531;
             border-radius: 22px;
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
+            gap: 4px;
+            cursor: pointer;
+        }
+
+        .pill-label {
+            color: #cbd82d;
+            font-size: 10px;
+            font-weight: 900;
+            letter-spacing: 0.12em;
         }
 
         .pill-line {
@@ -270,9 +284,10 @@
                 <div class="led-indicator">
                     <div class="led-core"></div>
                 </div>
-                <div class="pill-button">
+                <a href="issue.html" class="pill-button">
+                    <div class="pill-label">START</div>
                     <div class="pill-line"></div>
-                </div>
+                </a>
             </div>
         </div>
 

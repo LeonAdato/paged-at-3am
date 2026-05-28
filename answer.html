@@ -121,6 +121,15 @@
             text-transform: uppercase;
         }
 
+        .game-over {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2.5rem;
+            font-weight: 900;
+            color: #ffffff;
+            letter-spacing: 3px;
+            margin-bottom: 12px;
+        }
+
         .question-counter {
             font-family: 'Orbitron', sans-serif;
             font-size: 1.1rem;
@@ -157,6 +166,7 @@
 <body>
 
     <div id="result-label" class="result-label"></div>
+    <div id="game-over" class="game-over" style="display:none;">GAME OVER</div>
     <div id="question-counter" class="question-counter">0 / 10</div>
 
     <div class="card" id="card">
@@ -209,9 +219,14 @@
             const questioncount = parseInt(sessionStorage.getItem('questioncount') || '0');
             const correct = parseInt(sessionStorage.getItem('correct') || '0');
             document.getElementById('question-counter').innerText = 'Question ' + questioncount + ' / 10. ' + correct + ' answered correctly.';
+
+            const deckIndex = parseInt(sessionStorage.getItem('deckIndex') || '0');
+            document.getElementById('game-over').style.display = deckIndex >= 10 ? 'block' : 'none';
         }
 
         function startOver() {
+            sessionStorage.removeItem('deck');
+            sessionStorage.setItem('deckIndex', '0');
             sessionStorage.setItem('questioncount', '0');
             sessionStorage.setItem('correct', '0');
             sessionStorage.setItem('incorrect', '0');

@@ -70,5 +70,189 @@
       "title": "IGNORE",
       "detail": "SLOs provide a buffer for a certain amount of expected failure. You can use them to let you know if one host out of ten is actually causing your users problems or if you can absorb this failure and check on things later."
     }
+  },
+  {
+    "id": 10,
+    "issue": "SERVICE RETURNING 502s, ERROR BUDGET REMAINING: -20%, BURN RATE 0x",
+    "answer": {
+      "title": "IGNORE",
+      "detail": "0x Burn rate is the giveaway. While we've been out of error budget for a while, this SLO is actually improving as bad data points are dropping out of the tracking window."
+    }
+  },
+  {
+    "id": 11,
+    "issue": "ACME CLOUD PROVIDER STATUS: INCIDENT: WE ARE INVESTIGATING REPORTS OF DEGRADED AVAILABILITY",
+    "answer": {
+      "title": "IT DEPENDS",
+      "detail": "If you haven't gotten other alerts, then everything failed over properly, and you can go back to sleep. But will you really be able to?"
+    }
+  },
+  {
+    "id": 12,
+    "issue": "RESPONSE LATENCY INCREASED ON AN API SERVICE. ERROR BUDGET IS BURNING. ERROR BUDGET REMAINING: 14%. BURN RATE 0.91x",
+    "answer": {
+      "title": "IGNORE",
+      "detail": "A burn rate under 1x means you're not actually going to exceed your error budget. You can go back to bed and tune this alert later."
+    }
+  },
+  {
+    "id": 13,
+    "issue": "SYNTHETIC LATENCY SLO SHOWS SLOW BURN. ERROR BUDGET REMAINING: 8%. BURN RATE: 1.5%",
+    "answer": {
+      "title": "IGNORE",
+      "detail": "If you're burning slowly, you can probably wait until business hours to investigate."
+    }
+  },
+  {
+    "id": 14,
+    "issue": "SYNTHETIC LATENCY SLO SHOWS FAST BURN. ERROR BUDGET REMAINING: 24%. BURN RATE: 5x",
+    "answer": {
+      "title": "RESPOND",
+      "detail": "If you're burning error budget quickly, you probably need to take a look at things."
+    }
+  },
+  {
+    "id": 15,
+    "issue": "P0 TICKET OPENED BY CUSTOMER SUPPORT: MANY CUSTOMERS COMPLAINING ON TWITTER",
+    "answer": {
+      "title": "RESPOND",
+      "detail": "When your customers are actively complaining about you online, you definitely need to take a look."
+    }
+  },
+  {
+    "id": 16,
+    "issue": "WEB UI PAGES FAILING TO LOAD. ERROR BUDGET REMINAING: 3%. BURN RATE: 1x",
+    "answer": {
+      "title": "IGNORE",
+      "detail": "Errors are always going to happen. That is why we have error budgets. A burn that isn't fast burn is not necessarily bad. Having 1x burn on a calendar-aligned time window means you are maximizing your error budget."
+    }
+  },
+  {
+    "id": 17,
+    "issue": "SSL CERT EXPIREDS IN 7 DAYS",
+    "answer": {
+      "title": "IGNORE",
+      "detail": "Wait until the morning. Ideally, an error budget alert could file a ticket or bug, so you don't forget."
+    }
+  },
+  {
+    "id": 18,
+    "issue": "HOST STGW3456 OFFLINE\nHOST STGW3459 OFFLINE\nALL 157 STAGE HOSTS OFFLINE",
+    "answer": {
+      "title": "IGNORE",
+      "detail": "Wait until the morning... unless you treat staging as production."
+    }
+  },
+  {
+    "id": 19,
+    "issue": "99% CPU UTILIZATION ON LNXSRV1 OVER THE LAST 10 MINUTES",
+    "answer": {
+      "title": "IGNORE",
+      "detail": "If you have meaningful SLOs, you'll find out when this actually causes problems for users. You can investigate in the morning."
+    }
+  },
+  {
+    "id": 20,
+    "issue": "API RESPONSES HTTP ERROR RATE: 7.5%",
+    "answer": {
+      "title": "IT DEPENDS",
+      "detail": "7.5% is actually reasonable. Or maybe it's terrible! It can be difficult to tell in the middle of the night if you don't have SLO targets to help you figure it out."
+    }
+  },
+  {
+    "id": 21,
+    "issue": "KUBERNETES ERROR: PRODENVPOD-4986 IS OOMKILLED",
+    "answer": {
+      "title": "IGNORE",
+      "detail": "A single pod being oomkilled means you should probably investigate things. But not at 03:00 in the morning! When you have SLOs, you can have error budget burn rates alert you when OOM problems are causing your customers problems."
+    }
+  },
+  {
+    "id": 22,
+    "issue": "PRDXSADB CLUSTER HAS FAILED OVER.",
+    "answer": {
+      "title": "IGNORE",
+      "detail": "This can be addressed in the AM, tha's the point of a cluster right? SLOs will account for the temporarily poor performance. Set an alert if you're burning error budget too fast."
+    }
+  },
+  {
+    "id": 23,
+    "issue": "P95 LATENCY EXCEEDS 400ms",
+    "answer": {
+      "title": "IGNORE",
+      "detail": "Even though latency temporarily went over 400ms, it quickly returned to normal. Using an SLO would reduce false alarms like this alert. Safely ignore."
+    }
+  },
+  {
+    "id": 24,
+    "issue": "MAINTENANCE: COMPLETED PLATFORM MANTENANCE IN FR (BLUE) REGION. THE SCHEDULE MAINTENANCE HAS BEEN COMPLETED. NO ISSUES FOUND",
+    "answer": {
+      "title": "IGNORE",
+      "detail": "Why does this page even exist?!? Get a good night's rest, my friend."
+    }
+  },
+  {
+    "id": 25,
+    "issue": "BID PRICE OF SPOT REQUEST LOWER THAN CURRENT SPOT PRICE. ERROR BUDGET REMAINING: 85%. BURN RATE 0x",
+    "answer": {
+      "title": "IGNORE",
+      "detail": "Eror budget looks fine. Whatever wants to run on those spot instances will have to wait."
+    }
+  },
+  {
+    "id": 26,
+    "issue": "END USER APPDEX BELOW 0.8",
+    "answer": {
+      "title": "DEPENDS",
+      "detail": "It looks like this has recovered, right? Is there something that tracks whether this has been misbehaving enough to erode user confidence? Like, say, an SLO?"
+    }
+  },
+  {
+    "id": 27,
+    "issue": "URG: NETWORK BANDWIDGET LIMIT EXCEEDED. THROTTLING.",
+    "answer": {
+      "title": "IGNORE",
+      "detail": "If your traffic is getting throttled, that means that your users might also be experiencing increased latency. But a good error budget alert would let you know when it's actually causing them too many problems."
+    }
+  },
+  {
+    "id": 28,
+    "issue": "YOU BREACHED YOUR ERROR BUDGET A SECOND TIME AFTER RESOLVING THE FIRST BREACH. ERROR BUDGET REMAINING: -8%. BURN RATE 0x",
+    "answer": {
+      "title": "RESPOND",
+      "detail": "Welp, you have clearly ciolated your SO again. Had you set your alert policy, you could have saved the error budget before this happened. Are you sure you didn't sleep through an earlier page?"
+    }
+  },
+  {
+    "id": 29,
+    "issue": "URG: TRAFFIC THRESHOLD EXCEEDED 10000 QPS",
+    "answer": {
+      "title": "IGNORE",
+      "detail": "If the increased traffic isn't affecting the user experience and your SLOs are stready, you can safely go back to bed. Who cares if traffic threshold alerts went off if nothing is impacted?!"
+    }
+  },
+  {
+    "id": 30,
+    "issue": "DNS SYNTHETIC TEST: PRODUCTION APP = FAILED",
+    "answer": {
+      "title": "RESPOND",
+      "detail": "It could just be an issue with your check, but if there's an issue with the DNS records, users could not be able to access the site. Probably best to get up and check it out. "
+    }
+  },
+  {
+    "id": 31,
+    "issue": "APPNOD3: CRASHLOOPBACKOFF",
+    "answer": {
+      "title": "IGNORE",
+      "detail": "If it doesn't affect any of your SLOs or the user experience, you can wait until the morning to investigate."
+    }
+  },
+  {
+    "id": 32,
+    "issue": "YOUR IRS REFUND IS PENDING ACCEPTANCE! MUST ACCEPT BY GOING TO HTTPS://BIT.LY/3Z8RN95 IN 24 HOURS.",
+    "answer": {
+      "title": "IGNORE",
+      "detail": "OOPS! Sometimes you get pages by spam texts or emails!"
+    }
   }
 ]
